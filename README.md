@@ -18,7 +18,11 @@ The -toProfiles option tells the program how to insert the subscriptions. If the
 If the value is false, then one profile is created where all subscriptions are added into, and the subscription are **not** added to the All Channels profile.
  
  #### History
- `./ft-convert -history -op /path/to/old/file/subscriptions.db -np /path/to/new/file/profiles.db`
+ `./ft-convert -history -op /path/to/old/file/videoHistory.db -np /path/to/new/file/history.db`
+ 
+ #### Help
+ `./ft-convert -help
+ Displays the help description of the program.
 
  #### Running from source
  If you download the code and want to run it, replace the `./ft-convert` with `node index.js`
