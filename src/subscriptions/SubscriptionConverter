@@ -1,0 +1,128 @@
+const fs = require('fs')
+class SubscriptionConverter {
+    static generateId(length) {
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        let result = ''
+        for(let i = 0; i < length; i++){
+            result += alphabet.charAt(Math.floor(Math.random() * alphabet.length))
+        }
+        return result
+    }
+
+    static readJsonDataFromFile(filePath) {
+        const options ={
+            encoding: 'utf-8'
+        }
+
+        const fileData = fs.readFileSync(filePath, options).split('\n')
+        const fileJSONData = []
+        fileData.forEach((line) => {
+            if (line === '') {
+                return
+            }
+            fileJSONData.push(JSON.parse(line))
+        })
+        return fileJSONData
+    }
+    static getDataFromOldFreeTube(filepath) {
+        return this.readJsonDataFromFile(filepath)
+    }
+    static getDataFromNewFreeTube(filepath) {
+        return this.readJsonDataFromFile(filepath)
+    }
+
+    // adds the subscriptions all into one profile instead of to the dedicated profiles
+    static writeAllSubscriptionsToOneProfile(jsonProfile, filepath) {
+        fs.appendFile(filepath, JSON.stringify(jsonProfile), (err) => {
+            if (err) throw err;
+            console.log('Saved!');
+        });
+    }
+
+    static createSingleProfileForAllSubscriptions(jsonData) {
+        const newProfile = {
+            name: 'oldTube',
+            bgColor: '#C51162',
+            textColor: '#FFFFFF',
+            subscriptions: [],
+            _id: this.generateId(16)
+        }
+        jsonData.forEach((jsonLine) => {
+            newProfile.subscriptions.push({
+                id: jsonLine.channelId,
+                name: jsonLine.channelName,
+                thumbnail: jsonLine.channelThumbnail
+            })
+        })
+        return newProfile
+    }
+
+    // overwrites the new subscription database with the update profiles
+    static writeAllProfilesToFile(jsonProfiles, filepath){
+        fs.writeFileSync(filepath, JSON.stringify(jsonProfiles[0])+'\n', (err) => {
+            if (err) throw err;
+            console.log('Saved!');
+        });
+        jsonProfiles.shift()
+        jsonProfiles.forEach((profile) => {
+            fs.appendFileSync(filepath, JSON.stringify(profile)+'\n', (err) => {
+                if (err) throw err;
+                console.log('Saved!');
+            });
+        })
+        console.log('Saved!');
+    }
+
+    static addSubscriptionsToCorrespondingProfiles(oldFreeTubeData, newFreeTubeData) {
+        const newJsonProfiles = []
+        // add the profile to the array
+        newFreeTubeData.forEach((profile) => {
+            newJsonProfiles.push(profile.name)
+        })
+        oldFreeTubeData.forEach((channel) => {
+            const addedProfilesYet = []
+            const channelObject = {
+                id: channel.channelId,
+                name: channel.channelName,
+                thumbnail: channel.channelThumbnail
+            }
+            channel.profile.forEach((profilePart) => {
+                const indexOfProfile = newJsonProfiles.indexOf(profilePart.value)
+                if (indexOfProfile > -1) {
+                    if (addedProfilesYet.indexOf(indexOfProfile) !== -1) {
+                        return
+                    }
+                    newFreeTubeData[indexOfProfile].subscriptions.push(channelObject)
+                    addedProfilesYet.push(indexOfProfile)
+                } else {
+                    newJsonProfiles.push(profilePart.value)
+                    newFreeTubeData.push({
+                        name: profilePart.value,
+                        bgColor: '#C51162',
+                        textColor: '#FFFFFF',
+                        subscriptions: [],
+                        _id: this.generateId(16)
+                    })
+                    newFreeTubeData[newFreeTubeData.length-1].subscriptions.push(channelObject)
+                    addedProfilesYet.push(newFreeTubeData.length-1)
+                }
+            })
+        })
+        return newFreeTubeData
+    }
+
+    static convertOldSubscriptionsToNewSubscriptions(oldFreeTubeFilepath, newFreeTubeFilepath, addToCorrectProfiles) {
+        const oldFreeTubeData = this.getDataFromOldFreeTube(oldFreeTubeFilepath)
+        if (!addToCorrectProfiles) {
+            const newProfile = this.createSingleProfileForAllSubscriptions(oldFreeTubeData)
+            this.writeAllSubscriptionsToOneProfile(newProfile, newFreeTubeFilepath)
+        } else {
+            const newFreeTubeData = this.getDataFromNewFreeTube(newFreeTubeFilepath)
+            const updatedProfiles = this.addSubscriptionsToCorrespondingProfiles(oldFreeTubeData, newFreeTubeData)
+            console.log(updatedProfiles)
+            this.writeAllProfilesToFile(updatedProfiles, newFreeTubeFilepath)
+        }
+    }
+}
+
+module.exports = SubscriptionConverter
