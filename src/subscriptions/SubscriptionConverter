@@ -35,7 +35,6 @@ class SubscriptionConverter {
     static writeAllSubscriptionsToOneProfile(jsonProfile, filepath) {
         fs.appendFile(filepath, JSON.stringify(jsonProfile), (err) => {
             if (err) throw err;
-            console.log('Saved!');
         });
     }
 
@@ -61,16 +60,13 @@ class SubscriptionConverter {
     static writeAllProfilesToFile(jsonProfiles, filepath){
         fs.writeFileSync(filepath, JSON.stringify(jsonProfiles[0])+'\n', (err) => {
             if (err) throw err;
-            console.log('Saved!');
         });
         jsonProfiles.shift()
         jsonProfiles.forEach((profile) => {
             fs.appendFileSync(filepath, JSON.stringify(profile)+'\n', (err) => {
                 if (err) throw err;
-                console.log('Saved!');
             });
         })
-        console.log('Saved!');
     }
 
     static addSubscriptionsToCorrespondingProfiles(oldFreeTubeData, newFreeTubeData) {
@@ -119,7 +115,6 @@ class SubscriptionConverter {
         } else {
             const newFreeTubeData = this.getDataFromNewFreeTube(newFreeTubeFilepath)
             const updatedProfiles = this.addSubscriptionsToCorrespondingProfiles(oldFreeTubeData, newFreeTubeData)
-            console.log(updatedProfiles)
             this.writeAllProfilesToFile(updatedProfiles, newFreeTubeFilepath)
         }
     }
