@@ -21,7 +21,8 @@ If the value is false, then one profile is created where all subscriptions are a
  `./ft-convert -history -op /path/to/old/file/videoHistory.db -np /path/to/new/file/history.db`
  
  #### Help
- `./ft-convert -help
+ `./ft-convert -help`
+ 
  Displays the help description of the program.
 
  #### Running from source
