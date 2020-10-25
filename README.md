@@ -22,7 +22,7 @@ If the value is false, then one profile is created where all subscriptions are a
  `./ft-convert -history -op /path/to/old/file/videoHistory.db -np /path/to/new/file/history.db`
  
  #### PocketTube
- `./ft-convert -pocket -op /path/to/pocketube/file/subscriptions.json -np /path/to/new/file/history.db`
+ `./ft-convert -pocket -op /path/to/pocketube/file/subscriptions.json -np /path/to/new/file/profiles.db`
  
  #### Help
  `./ft-convert -help`
