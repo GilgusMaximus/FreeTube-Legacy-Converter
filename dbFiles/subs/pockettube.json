@@ -1,0 +1,34 @@
+{
+  "Gaming": [
+    "UCnbvPS_rXp4PC21PG2k1UVg"
+  ],
+  "History": [
+    "UCnbvPS_rXp4PC21PG2k1UVg",
+    "UCK-GxvzttTnNhq3JPYpXhqg"
+  ],
+  "Social": [
+    "UCK-GxvzttTnNhq3JPYpXhqg"
+  ],
+  "ysc_collection": {
+    "Gaming": "Gaming",
+    "History": "History",
+    "Social": "Social"
+  },
+  "ysc_meta": {
+    "Gaming": {
+      "img": "chrome-extension://kdmnjgijlmjgmimahnillepgcgeemffb/icon/new_pack/_6.png"
+    },
+    "History": {
+      "img": "chrome-extension://kdmnjgijlmjgmimahnillepgcgeemffb/icon/new_pack/_52.png"
+    },
+    "Social": {
+      "img": "chrome-extension://kdmnjgijlmjgmimahnillepgcgeemffb/icon/new_pack/_52.png"
+    }
+  },
+  "ysc_settings": {
+    "install_date": 1603656044494,
+    "lang": "en-US",
+    "subscribe_mouseover": false,
+    "uid": "3c4015ab193fa0e92eb"
+  }
+}
